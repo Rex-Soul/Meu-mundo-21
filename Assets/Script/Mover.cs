@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Mover : MonoBehaviour
 {
@@ -12,14 +13,14 @@ public class Mover : MonoBehaviour
     [SerializeField] float gravityValue = -9.81f;
     void Start()
     {
-        
+
         _controller=GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        InputMovePlayer();
+        //InputMovePlayer();
         MovendoPlayer();
     }
     void InputMovePlayer()
@@ -40,11 +41,31 @@ public class Mover : MonoBehaviour
         {
             gameObject.transform.forward = _movePlayer;
         }
+        //JumpPlayer();
+        Gravidade();
+    }
+    void JumpPlayer()
+    {
         if (Input.GetButtonDown("Jump") && groundedPlayer)
         {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
         }
+    }
+    void Gravidade()
+    {
         playerVelocity.y += gravityValue * Time.deltaTime;
         _controller.Move(playerVelocity * Time.deltaTime);
+    }
+    public void SetMove(InputAction.CallbackContext value)
+    {
+        _movePlayer.x = value.ReadValue<Vector3>().x;
+        _movePlayer.y = value.ReadValue<Vector3>().y;
+    }
+    public void SetJump(InputAction.CallbackContext value)
+    {
+        if (groundedPlayer == true)
+        {
+            playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
+        }
     }
 }

@@ -18,6 +18,6 @@ public class CharacterController : MonoBehaviour
     {
         float moveH = Input.GetAxisRaw("Horizontal");
         float moveZ = Input.GetAxisRaw("Vertical");
-        _characterController.Move(transform.forward* moveZ * _speed * Time.deltaTime);
+        _characterController.Move.Controller(transform.forward* moveZ * _speed * Time.deltaTime);
     }
 }
